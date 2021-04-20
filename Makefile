@@ -16,7 +16,7 @@ all: install
 
 install: go.sum
 		@echo "--> Installing coinswapd"
-		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/coinswapd
+		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/swap-moduled
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"
