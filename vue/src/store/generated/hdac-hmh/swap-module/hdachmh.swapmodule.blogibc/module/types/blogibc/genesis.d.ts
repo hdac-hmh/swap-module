@@ -1,3 +1,4 @@
+import { TimedoutPost } from "../blogibc/timedoutPost";
 import { SentPost } from "../blogibc/sentPost";
 import { Post } from "../blogibc/post";
 import { Writer, Reader } from "protobufjs/minimal";
@@ -5,6 +6,8 @@ export declare const protobufPackage = "hdachmh.swapmodule.blogibc";
 /** GenesisState defines the blogibc module's genesis state. */
 export interface GenesisState {
     /** this line is used by starport scaffolding # genesis/proto/state */
+    timedoutPostList: TimedoutPost[];
+    /** this line is used by starport scaffolding # genesis/proto/stateField */
     sentPostList: SentPost[];
     /** this line is used by starport scaffolding # genesis/proto/stateField */
     postList: Post[];

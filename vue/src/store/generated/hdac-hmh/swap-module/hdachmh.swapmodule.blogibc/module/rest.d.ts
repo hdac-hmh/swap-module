@@ -6,10 +6,16 @@ export interface BlogibcMsgCreateSentPostResponse {
     /** @format uint64 */
     id?: string;
 }
+export interface BlogibcMsgCreateTimedoutPostResponse {
+    /** @format uint64 */
+    id?: string;
+}
 export declare type BlogibcMsgDeletePostResponse = object;
 export declare type BlogibcMsgDeleteSentPostResponse = object;
+export declare type BlogibcMsgDeleteTimedoutPostResponse = object;
 export declare type BlogibcMsgUpdatePostResponse = object;
 export declare type BlogibcMsgUpdateSentPostResponse = object;
+export declare type BlogibcMsgUpdateTimedoutPostResponse = object;
 export interface BlogibcPost {
     creator?: string;
     /** @format uint64 */
@@ -43,17 +49,40 @@ export interface BlogibcQueryAllSentPostResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
+export interface BlogibcQueryAllTimedoutPostResponse {
+    TimedoutPost?: BlogibcTimedoutPost[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
 export interface BlogibcQueryGetPostResponse {
     Post?: BlogibcPost;
 }
 export interface BlogibcQueryGetSentPostResponse {
     SentPost?: BlogibcSentPost;
 }
+export interface BlogibcQueryGetTimedoutPostResponse {
+    TimedoutPost?: BlogibcTimedoutPost;
+}
 export interface BlogibcSentPost {
     creator?: string;
     /** @format uint64 */
     id?: string;
     postID?: string;
+    title?: string;
+    chain?: string;
+}
+export interface BlogibcTimedoutPost {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
     title?: string;
     chain?: string;
 }
@@ -215,9 +244,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      *
      * @tags Query
      * @name QuerySentPost
-     * @summary this line is used by starport scaffolding # 2
      * @request GET:/hdac-hmh/swapmodule/blogibc/sentPost/{id}
      */
     querySentPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryGetSentPostResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryTimedoutPostAll
+     * @request GET:/hdac-hmh/swapmodule/blogibc/timedoutPost
+     */
+    queryTimedoutPostAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryAllTimedoutPostResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryTimedoutPost
+     * @summary this line is used by starport scaffolding # 2
+     * @request GET:/hdac-hmh/swapmodule/blogibc/timedoutPost/{id}
+     */
+    queryTimedoutPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryGetTimedoutPostResponse, RpcStatus>>;
 }
 export {};

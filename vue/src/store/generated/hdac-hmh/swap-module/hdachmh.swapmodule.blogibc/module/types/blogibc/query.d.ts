@@ -1,9 +1,23 @@
 import { Reader, Writer } from "protobufjs/minimal";
-import { SentPost } from "../blogibc/sentPost";
+import { TimedoutPost } from "../blogibc/timedoutPost";
 import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
+import { SentPost } from "../blogibc/sentPost";
 import { Post } from "../blogibc/post";
 export declare const protobufPackage = "hdachmh.swapmodule.blogibc";
 /** this line is used by starport scaffolding # 3 */
+export interface QueryGetTimedoutPostRequest {
+    id: number;
+}
+export interface QueryGetTimedoutPostResponse {
+    TimedoutPost: TimedoutPost | undefined;
+}
+export interface QueryAllTimedoutPostRequest {
+    pagination: PageRequest | undefined;
+}
+export interface QueryAllTimedoutPostResponse {
+    TimedoutPost: TimedoutPost[];
+    pagination: PageResponse | undefined;
+}
 export interface QueryGetSentPostRequest {
     id: number;
 }
@@ -30,6 +44,34 @@ export interface QueryAllPostResponse {
     Post: Post[];
     pagination: PageResponse | undefined;
 }
+export declare const QueryGetTimedoutPostRequest: {
+    encode(message: QueryGetTimedoutPostRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetTimedoutPostRequest;
+    fromJSON(object: any): QueryGetTimedoutPostRequest;
+    toJSON(message: QueryGetTimedoutPostRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetTimedoutPostRequest>): QueryGetTimedoutPostRequest;
+};
+export declare const QueryGetTimedoutPostResponse: {
+    encode(message: QueryGetTimedoutPostResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetTimedoutPostResponse;
+    fromJSON(object: any): QueryGetTimedoutPostResponse;
+    toJSON(message: QueryGetTimedoutPostResponse): unknown;
+    fromPartial(object: DeepPartial<QueryGetTimedoutPostResponse>): QueryGetTimedoutPostResponse;
+};
+export declare const QueryAllTimedoutPostRequest: {
+    encode(message: QueryAllTimedoutPostRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryAllTimedoutPostRequest;
+    fromJSON(object: any): QueryAllTimedoutPostRequest;
+    toJSON(message: QueryAllTimedoutPostRequest): unknown;
+    fromPartial(object: DeepPartial<QueryAllTimedoutPostRequest>): QueryAllTimedoutPostRequest;
+};
+export declare const QueryAllTimedoutPostResponse: {
+    encode(message: QueryAllTimedoutPostResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryAllTimedoutPostResponse;
+    fromJSON(object: any): QueryAllTimedoutPostResponse;
+    toJSON(message: QueryAllTimedoutPostResponse): unknown;
+    fromPartial(object: DeepPartial<QueryAllTimedoutPostResponse>): QueryAllTimedoutPostResponse;
+};
 export declare const QueryGetSentPostRequest: {
     encode(message: QueryGetSentPostRequest, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): QueryGetSentPostRequest;
@@ -89,6 +131,8 @@ export declare const QueryAllPostResponse: {
 /** Query defines the gRPC querier service. */
 export interface Query {
     /** this line is used by starport scaffolding # 2 */
+    TimedoutPost(request: QueryGetTimedoutPostRequest): Promise<QueryGetTimedoutPostResponse>;
+    TimedoutPostAll(request: QueryAllTimedoutPostRequest): Promise<QueryAllTimedoutPostResponse>;
     SentPost(request: QueryGetSentPostRequest): Promise<QueryGetSentPostResponse>;
     SentPostAll(request: QueryAllSentPostRequest): Promise<QueryAllSentPostResponse>;
     Post(request: QueryGetPostRequest): Promise<QueryGetPostResponse>;
@@ -97,6 +141,8 @@ export interface Query {
 export declare class QueryClientImpl implements Query {
     private readonly rpc;
     constructor(rpc: Rpc);
+    TimedoutPost(request: QueryGetTimedoutPostRequest): Promise<QueryGetTimedoutPostResponse>;
+    TimedoutPostAll(request: QueryAllTimedoutPostRequest): Promise<QueryAllTimedoutPostResponse>;
     SentPost(request: QueryGetSentPostRequest): Promise<QueryGetSentPostResponse>;
     SentPostAll(request: QueryAllSentPostRequest): Promise<QueryAllSentPostResponse>;
     Post(request: QueryGetPostRequest): Promise<QueryGetPostResponse>;
