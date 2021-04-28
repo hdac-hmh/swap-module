@@ -87,6 +87,9 @@ import (
 	"github.com/hdac-hmh/swap-module/x/blog"
 	blogkeeper "github.com/hdac-hmh/swap-module/x/blog/keeper"
 	blogtypes "github.com/hdac-hmh/swap-module/x/blog/types"
+	"github.com/hdac-hmh/swap-module/x/voter"
+	voterkeeper "github.com/hdac-hmh/swap-module/x/voter/keeper"
+	votertypes "github.com/hdac-hmh/swap-module/x/voter/types"
 
 	"github.com/hdac-hmh/swap-module/x/blogibc"
 	blogibckeeper "github.com/hdac-hmh/swap-module/x/blogibc/keeper"
@@ -137,6 +140,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		voter.AppModuleBasic{},
 		blog.AppModuleBasic{},
 		blogibc.AppModuleBasic{},
 	)
@@ -206,6 +210,8 @@ type App struct {
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	voterKeeper voterkeeper.Keeper
+
 	blogKeeper          blogkeeper.Keeper
 	ScopedBlogibcKeeper capabilitykeeper.ScopedKeeper
 	blogibcKeeper       blogibckeeper.Keeper
@@ -238,6 +244,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		votertypes.StoreKey,
 		blogtypes.StoreKey,
 		blogibctypes.StoreKey,
 		blogtypes.StoreKey,
@@ -332,6 +339,14 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.voterKeeper = *voterkeeper.NewKeeper(
+		appCodec,
+		keys[votertypes.StoreKey],
+		keys[votertypes.MemStoreKey],
+		app.BankKeeper,
+	)
+	voterModule := voter.NewAppModule(appCodec, app.voterKeeper)
+
 	app.blogKeeper = *blogkeeper.NewKeeper(
 		appCodec,
 		keys[blogtypes.StoreKey],
@@ -392,6 +407,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+		voterModule,
 		blogModule,
 		blogibcModule,
 	)
@@ -427,6 +443,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		votertypes.ModuleName,
 		blogtypes.ModuleName,
 		blogibctypes.ModuleName,
 		blogtypes.ModuleName,
@@ -612,6 +629,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(votertypes.ModuleName)
 	paramsKeeper.Subspace(blogtypes.ModuleName)
 	paramsKeeper.Subspace(blogibctypes.ModuleName)
 
