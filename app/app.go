@@ -85,11 +85,7 @@ import (
 	swapmoduletypes "github.com/hdac-hmh/swap-module/x/swapmodule/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	"github.com/hdac-hmh/swap-module/x/mintservice"
-	mintservicekeeper "github.com/hdac-hmh/swap-module/x/mintservice/keeper"
-	mintservicetypes "github.com/hdac-hmh/swap-module/x/mintservice/types"
 )
 
 const Name = "swapmodule"
@@ -137,7 +133,6 @@ var (
 		vesting.AppModuleBasic{},
 		swapmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		mintservice.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -206,8 +201,6 @@ type App struct {
 	swapmoduleKeeper swapmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	mintserviceKeeper mintservicekeeper.Keeper
-
 	// the module manager
 	mm *module.Manager
 }
@@ -237,7 +230,6 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		swapmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		mintservicetypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -333,13 +325,6 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.mintserviceKeeper = *mintservicekeeper.NewKeeper(
-		appCodec,
-		keys[mintservicetypes.StoreKey],
-		keys[mintservicetypes.MemStoreKey],
-	)
-	mintserviceModule := mintservice.NewAppModule(appCodec, app.mintserviceKeeper)
-
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter,
@@ -382,7 +367,6 @@ func New(
 		transferModule,
 		swapmodule.NewAppModule(appCodec, app.swapmoduleKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
-		mintserviceModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -417,7 +401,6 @@ func New(
 		ibctransfertypes.ModuleName,
 		swapmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		mintservicetypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -600,7 +583,6 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(mintservicetypes.ModuleName)
 
 	return paramsKeeper
 }
