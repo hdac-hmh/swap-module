@@ -2,8 +2,14 @@ export interface BlogibcMsgCreatePostResponse {
     /** @format uint64 */
     id?: string;
 }
+export interface BlogibcMsgCreateSentPostResponse {
+    /** @format uint64 */
+    id?: string;
+}
 export declare type BlogibcMsgDeletePostResponse = object;
+export declare type BlogibcMsgDeleteSentPostResponse = object;
 export declare type BlogibcMsgUpdatePostResponse = object;
+export declare type BlogibcMsgUpdateSentPostResponse = object;
 export interface BlogibcPost {
     creator?: string;
     /** @format uint64 */
@@ -24,8 +30,32 @@ export interface BlogibcQueryAllPostResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
+export interface BlogibcQueryAllSentPostResponse {
+    SentPost?: BlogibcSentPost[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
 export interface BlogibcQueryGetPostResponse {
     Post?: BlogibcPost;
+}
+export interface BlogibcQueryGetSentPostResponse {
+    SentPost?: BlogibcSentPost;
+}
+export interface BlogibcSentPost {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
+    postID?: string;
+    title?: string;
+    chain?: string;
 }
 export interface ProtobufAny {
     typeUrl?: string;
@@ -164,9 +194,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      *
      * @tags Query
      * @name QueryPost
-     * @summary this line is used by starport scaffolding # 2
      * @request GET:/hdac-hmh/swapmodule/blogibc/post/{id}
      */
     queryPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryGetPostResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QuerySentPostAll
+     * @request GET:/hdac-hmh/swapmodule/blogibc/sentPost
+     */
+    querySentPostAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryAllSentPostResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QuerySentPost
+     * @summary this line is used by starport scaffolding # 2
+     * @request GET:/hdac-hmh/swapmodule/blogibc/sentPost/{id}
+     */
+    querySentPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogibcQueryGetSentPostResponse, RpcStatus>>;
 }
 export {};

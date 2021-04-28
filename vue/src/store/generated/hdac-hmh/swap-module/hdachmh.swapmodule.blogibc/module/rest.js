@@ -155,11 +155,38 @@ export class Api extends HttpClient {
          *
          * @tags Query
          * @name QueryPost
-         * @summary this line is used by starport scaffolding # 2
          * @request GET:/hdac-hmh/swapmodule/blogibc/post/{id}
          */
         this.queryPost = (id, params = {}) => this.request({
             path: `/hdac-hmh/swapmodule/blogibc/post/${id}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QuerySentPostAll
+         * @request GET:/hdac-hmh/swapmodule/blogibc/sentPost
+         */
+        this.querySentPostAll = (query, params = {}) => this.request({
+            path: `/hdac-hmh/swapmodule/blogibc/sentPost`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QuerySentPost
+         * @summary this line is used by starport scaffolding # 2
+         * @request GET:/hdac-hmh/swapmodule/blogibc/sentPost/{id}
+         */
+        this.querySentPost = (id, params = {}) => this.request({
+            path: `/hdac-hmh/swapmodule/blogibc/sentPost/${id}`,
             method: "GET",
             format: "json",
             ...params,

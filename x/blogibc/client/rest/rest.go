@@ -17,10 +17,16 @@ func RegisterRoutes(clientCtx client.Context, r *mux.Router) {
 	registerQueryRoutes(clientCtx, r)
 	registerTxHandlers(clientCtx, r)
 
+	registerQueryRoutes(clientCtx, r)
+	registerTxHandlers(clientCtx, r)
+
 }
 
 func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 3
+	r.HandleFunc("/blogibc/sentPosts/{id}", getSentPostHandler(clientCtx)).Methods("GET")
+	r.HandleFunc("/blogibc/sentPosts", listSentPostHandler(clientCtx)).Methods("GET")
+
 	r.HandleFunc("/blogibc/posts/{id}", getPostHandler(clientCtx)).Methods("GET")
 	r.HandleFunc("/blogibc/posts", listPostHandler(clientCtx)).Methods("GET")
 
@@ -28,6 +34,10 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
+	r.HandleFunc("/blogibc/sentPosts", createSentPostHandler(clientCtx)).Methods("POST")
+	r.HandleFunc("/blogibc/sentPosts/{id}", updateSentPostHandler(clientCtx)).Methods("POST")
+	r.HandleFunc("/blogibc/sentPosts/{id}", deleteSentPostHandler(clientCtx)).Methods("POST")
+
 	r.HandleFunc("/blogibc/posts", createPostHandler(clientCtx)).Methods("POST")
 	r.HandleFunc("/blogibc/posts/{id}", updatePostHandler(clientCtx)).Methods("POST")
 	r.HandleFunc("/blogibc/posts/{id}", deletePostHandler(clientCtx)).Methods("POST")

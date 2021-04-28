@@ -2,6 +2,7 @@
 	<div>
 		<div class="container">
       	<!-- this line is used by starport scaffolding # 4 -->
+		<SpType modulePath="hdac-hmh.swapmodule.blogibc" moduleType="SentPost"  />
 		<SpType modulePath="hdac-hmh.swapmodule.blogibc" moduleType="Post"  />
 		</div>
 	</div>
