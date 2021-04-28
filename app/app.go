@@ -80,11 +80,9 @@ import (
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	appparams "github.com/hdac-hmh/swap-module/app/params"
-	"github.com/hdac-hmh/swap-module/x/swapmodule"
-	swapmodulekeeper "github.com/hdac-hmh/swap-module/x/swapmodule/keeper"
-	swapmoduletypes "github.com/hdac-hmh/swap-module/x/swapmodule/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 	"github.com/hdac-hmh/swap-module/x/blog"
 	blogkeeper "github.com/hdac-hmh/swap-module/x/blog/keeper"
@@ -134,7 +132,6 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		swapmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 		blog.AppModuleBasic{},
 	)
@@ -202,7 +199,6 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	swapmoduleKeeper swapmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	blogKeeper blogkeeper.Keeper
@@ -234,7 +230,6 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		swapmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 		blogtypes.StoreKey,
 	)
@@ -326,10 +321,6 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	app.swapmoduleKeeper = *swapmodulekeeper.NewKeeper(
-		appCodec, keys[swapmoduletypes.StoreKey], keys[swapmoduletypes.MemStoreKey],
-	)
-
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	app.blogKeeper = *blogkeeper.NewKeeper(
@@ -379,7 +370,6 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		swapmodule.NewAppModule(appCodec, app.swapmoduleKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
 		blogModule,
 	)
@@ -414,7 +404,6 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		swapmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 		blogtypes.ModuleName,
 	)
