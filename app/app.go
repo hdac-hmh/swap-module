@@ -87,6 +87,7 @@ import (
 	"github.com/hdac-hmh/swap-module/x/blog"
 	blogkeeper "github.com/hdac-hmh/swap-module/x/blog/keeper"
 	blogtypes "github.com/hdac-hmh/swap-module/x/blog/types"
+
 	"github.com/hdac-hmh/swap-module/x/blogibc"
 	blogibckeeper "github.com/hdac-hmh/swap-module/x/blogibc/keeper"
 	blogibctypes "github.com/hdac-hmh/swap-module/x/blogibc/types"
@@ -136,8 +137,8 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		blogibc.AppModuleBasic{},
 		blog.AppModuleBasic{},
+		blogibc.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -204,10 +205,10 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+
+	blogKeeper          blogkeeper.Keeper
 	ScopedBlogibcKeeper capabilitykeeper.ScopedKeeper
 	blogibcKeeper       blogibckeeper.Keeper
-
-	blogKeeper blogkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -237,6 +238,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		blogtypes.StoreKey,
 		blogibctypes.StoreKey,
 		blogtypes.StoreKey,
 	)
@@ -329,6 +331,13 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+
+	app.blogKeeper = *blogkeeper.NewKeeper(
+		appCodec,
+		keys[blogtypes.StoreKey],
+		keys[blogtypes.MemStoreKey],
+	)
+	blogModule := blog.NewAppModule(appCodec, app.blogKeeper)
 	scopedBlogibcKeeper := app.CapabilityKeeper.ScopeToModule(blogibctypes.ModuleName)
 	app.ScopedBlogibcKeeper = scopedBlogibcKeeper
 	app.blogibcKeeper = *blogibckeeper.NewKeeper(
@@ -340,13 +349,6 @@ func New(
 		scopedBlogibcKeeper,
 	)
 	blogibcModule := blogibc.NewAppModule(appCodec, app.blogibcKeeper)
-
-	app.blogKeeper = *blogkeeper.NewKeeper(
-		appCodec,
-		keys[blogtypes.StoreKey],
-		keys[blogtypes.MemStoreKey],
-	)
-	blogModule := blog.NewAppModule(appCodec, app.blogKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -390,8 +392,8 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		blogibcModule,
 		blogModule,
+		blogibcModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -425,6 +427,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		blogtypes.ModuleName,
 		blogibctypes.ModuleName,
 		blogtypes.ModuleName,
 	)
@@ -609,8 +612,8 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(blogibctypes.ModuleName)
 	paramsKeeper.Subspace(blogtypes.ModuleName)
+	paramsKeeper.Subspace(blogibctypes.ModuleName)
 
 	return paramsKeeper
 }
