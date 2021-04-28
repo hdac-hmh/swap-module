@@ -10,6 +10,14 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the comment
+	for _, elem := range genState.CommentList {
+		k.SetComment(ctx, *elem)
+	}
+
+	// Set comment count
+	k.SetCommentCount(ctx, uint64(len(genState.CommentList)))
+
 	// Set all the post
 	for _, elem := range genState.PostList {
 		k.SetPost(ctx, *elem)
@@ -26,6 +34,13 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	// this line is used by starport scaffolding # genesis/module/export
+	// Get all comment
+	commentList := k.GetAllComment(ctx)
+	for _, elem := range commentList {
+		elem := elem
+		genesis.CommentList = append(genesis.CommentList, &elem)
+	}
+
 	// Get all post
 	postList := k.GetAllPost(ctx)
 	for _, elem := range postList {

@@ -29,3 +29,8 @@ const (
 	PostKey      = "Post-value-"
 	PostCountKey = "Post-count-"
 )
+
+const (
+	CommentKey      = "Comment-value-"
+	CommentCountKey = "Comment-count-"
+)

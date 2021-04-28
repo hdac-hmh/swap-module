@@ -1,0 +1,13 @@
+syntax = "proto3";
+package hdachmh.swapmodule.blog;
+
+option go_package = "github.com/hdac-hmh/swap-module/x/blog/types";
+
+import "gogoproto/gogo.proto";
+
+message Comment {
+  string creator = 1;
+  uint64 id = 2;
+  string body = 3; 
+  string postID = 4; 
+}

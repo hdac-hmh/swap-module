@@ -17,10 +17,16 @@ func RegisterRoutes(clientCtx client.Context, r *mux.Router) {
 	registerQueryRoutes(clientCtx, r)
 	registerTxHandlers(clientCtx, r)
 
+	registerQueryRoutes(clientCtx, r)
+	registerTxHandlers(clientCtx, r)
+
 }
 
 func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 3
+	r.HandleFunc("/blog/comments/{id}", getCommentHandler(clientCtx)).Methods("GET")
+	r.HandleFunc("/blog/comments", listCommentHandler(clientCtx)).Methods("GET")
+
 	r.HandleFunc("/blog/posts/{id}", getPostHandler(clientCtx)).Methods("GET")
 	r.HandleFunc("/blog/posts", listPostHandler(clientCtx)).Methods("GET")
 
@@ -28,6 +34,10 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
+	r.HandleFunc("/blog/comments", createCommentHandler(clientCtx)).Methods("POST")
+	r.HandleFunc("/blog/comments/{id}", updateCommentHandler(clientCtx)).Methods("POST")
+	r.HandleFunc("/blog/comments/{id}", deleteCommentHandler(clientCtx)).Methods("POST")
+
 	r.HandleFunc("/blog/posts", createPostHandler(clientCtx)).Methods("POST")
 	r.HandleFunc("/blog/posts/{id}", updatePostHandler(clientCtx)).Methods("POST")
 	r.HandleFunc("/blog/posts/{id}", deletePostHandler(clientCtx)).Methods("POST")

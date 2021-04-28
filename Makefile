@@ -1,11 +1,12 @@
 PACKAGES=$(shell go list ./... | grep -v '/simulation')
 
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
+VERSION = 0.1.0
 COMMIT := $(shell git log -1 --format='%H')
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=SwapService \
-	-X github.com/cosmos/cosmos-sdk/version.ServerName=coinswapd \
-	-X github.com/cosmos/cosmos-sdk/version.ClientName=coinswapcli \
+	-X github.com/cosmos/cosmos-sdk/version.ServerName=swapd \
+	-X github.com/cosmos/cosmos-sdk/version.ClientName=swapcli \
 	-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 	-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) 
 
@@ -15,7 +16,7 @@ include Makefile.ledger
 all: install
 
 install: go.sum
-		@echo "--> Installing coinswapd"
+		@echo "--> Installing swapd"
 		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/swap-moduled
 
 go.sum: go.mod

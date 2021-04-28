@@ -1,9 +1,12 @@
+import { Comment } from "../blog/comment";
 import { Post } from "../blog/post";
 import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "hdachmh.swapmodule.blog";
 /** GenesisState defines the blog module's genesis state. */
 export interface GenesisState {
     /** this line is used by starport scaffolding # genesis/proto/state */
+    commentList: Comment[];
+    /** this line is used by starport scaffolding # genesis/proto/stateField */
     postList: Post[];
 }
 export declare const GenesisState: {

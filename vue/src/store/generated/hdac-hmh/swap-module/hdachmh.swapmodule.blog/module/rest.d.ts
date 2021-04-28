@@ -1,8 +1,21 @@
+export interface BlogComment {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
+    body?: string;
+    postID?: string;
+}
+export interface BlogMsgCreateCommentResponse {
+    /** @format uint64 */
+    id?: string;
+}
 export interface BlogMsgCreatePostResponse {
     /** @format uint64 */
     id?: string;
 }
+export declare type BlogMsgDeleteCommentResponse = object;
 export declare type BlogMsgDeletePostResponse = object;
+export declare type BlogMsgUpdateCommentResponse = object;
 export declare type BlogMsgUpdatePostResponse = object;
 export interface BlogPost {
     creator?: string;
@@ -10,6 +23,19 @@ export interface BlogPost {
     id?: string;
     title?: string;
     body?: string;
+}
+export interface BlogQueryAllCommentResponse {
+    Comment?: BlogComment[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
 }
 export interface BlogQueryAllPostResponse {
     Post?: BlogPost[];
@@ -23,6 +49,9 @@ export interface BlogQueryAllPostResponse {
      *  }
      */
     pagination?: V1Beta1PageResponse;
+}
+export interface BlogQueryGetCommentResponse {
+    Comment?: BlogComment;
 }
 export interface BlogQueryGetPostResponse {
     Post?: BlogPost;
@@ -150,6 +179,28 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryCommentAll
+     * @request GET:/hdac-hmh/swapmodule/blog/comment
+     */
+    queryCommentAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<BlogQueryAllCommentResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryComment
+     * @summary this line is used by starport scaffolding # 2
+     * @request GET:/hdac-hmh/swapmodule/blog/comment/{id}
+     */
+    queryComment: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetCommentResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryPostAll
      * @request GET:/hdac-hmh/swapmodule/blog/post
      */
@@ -164,7 +215,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      *
      * @tags Query
      * @name QueryPost
-     * @summary this line is used by starport scaffolding # 2
      * @request GET:/hdac-hmh/swapmodule/blog/post/{id}
      */
     queryPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetPostResponse, RpcStatus>>;
