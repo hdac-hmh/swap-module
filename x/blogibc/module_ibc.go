@@ -139,6 +139,25 @@ func (am AppModule) OnRecvPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/recv
+	case *types.BlogibcPacketData_IbcPostPacket:
+		packetAck, err := am.keeper.OnRecvIbcPostPacket(ctx, modulePacket, *packet.IbcPostPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err.Error())
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes, err := packetAck.Marshal()
+			if err != nil {
+				return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+			}
+			ack = channeltypes.NewResultAcknowledgement(packetAckBytes)
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeIbcPostPacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -176,6 +195,12 @@ func (am AppModule) OnAcknowledgementPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/ack
+	case *types.BlogibcPacketData_IbcPostPacket:
+		err := am.keeper.OnAcknowledgementIbcPostPacket(ctx, modulePacket, *packet.IbcPostPacket, ack)
+		if err != nil {
+			return nil, err
+		}
+		eventType = types.EventTypeIbcPostPacket
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -224,6 +249,11 @@ func (am AppModule) OnTimeoutPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	// this line is used by starport scaffolding # ibc/packet/module/timeout
+	case *types.BlogibcPacketData_IbcPostPacket:
+		err := am.keeper.OnTimeoutIbcPostPacket(ctx, modulePacket, *packet.IbcPostPacket)
+		if err != nil {
+			return nil, err
+		}
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

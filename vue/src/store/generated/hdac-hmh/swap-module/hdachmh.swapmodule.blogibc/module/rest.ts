@@ -30,6 +30,8 @@ export type BlogibcMsgDeleteSentPostResponse = object;
 
 export type BlogibcMsgDeleteTimedoutPostResponse = object;
 
+export type BlogibcMsgSendIbcPostResponse = object;
+
 export type BlogibcMsgUpdatePostResponse = object;
 
 export type BlogibcMsgUpdateSentPostResponse = object;

@@ -8,6 +8,7 @@ option go_package = "github.com/hdac-hmh/swap-module/x/blogibc/types";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendIbcPost(MsgSendIbcPost) returns (MsgSendIbcPostResponse);
   rpc CreateTimedoutPost(MsgCreateTimedoutPost) returns (MsgCreateTimedoutPostResponse);
   rpc UpdateTimedoutPost(MsgUpdateTimedoutPost) returns (MsgUpdateTimedoutPostResponse);
   rpc DeleteTimedoutPost(MsgDeleteTimedoutPost) returns (MsgDeleteTimedoutPostResponse);
@@ -20,6 +21,18 @@ service Msg {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgSendIbcPost {
+  string sender = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string title = 5;
+  string content = 6;
+}
+
+message MsgSendIbcPostResponse {
+}
+
 message MsgCreateTimedoutPost {
   string creator = 1;
   string title = 2;
