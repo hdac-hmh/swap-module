@@ -1,0 +1,12 @@
+syntax = "proto3";
+package hdachmh.swapmodule.tokenswap;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
+
+// GenesisState defines the tokenswap module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+    // this line is used by starport scaffolding # ibc/genesis/proto
+}
