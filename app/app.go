@@ -350,6 +350,7 @@ func New(
 		appCodec,
 		keys[tokenswaptypes.StoreKey],
 		keys[tokenswaptypes.MemStoreKey],
+		app.BankKeeper,
 	)
 	tokenswapModule := tokenswap.NewAppModule(appCodec, app.tokenswapKeeper)
 

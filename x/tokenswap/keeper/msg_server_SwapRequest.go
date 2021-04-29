@@ -7,10 +7,24 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/hdac-hmh/swap-module/x/tokenswap/types"
+	"github.com/tendermint/tendermint/crypto"
 )
 
 func (k msgServer) CreateSwapRequest(goCtx context.Context, msg *types.MsgCreateSwapRequest) (*types.MsgCreateSwapRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
+	swapedCoinAmount, err := sdk.ParseCoinsNormalized(msg.AmountEng)
+	if err != nil {
+		return nil, err
+	}
+	creatorAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if err := k.bankKeeper.SendCoins(ctx, creatorAddress, moduleAcct, swapedCoinAmount); err != nil {
+		return nil, err
+	}
 
 	id := k.AppendSwapRequest(
 		ctx,

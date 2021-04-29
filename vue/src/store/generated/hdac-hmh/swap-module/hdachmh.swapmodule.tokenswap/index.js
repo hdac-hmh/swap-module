@@ -141,22 +141,6 @@ export default {
                 }
             }
         },
-        async sendMsgCreateSwapRequest({ rootGetters }, { value, fee, memo }) {
-            try {
-                const msg = await (await initTxClient(rootGetters)).msgCreateSwapRequest(value);
-                const result = await (await initTxClient(rootGetters)).signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e.toString() == 'wallet is required') {
-                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Send', 'Could not broadcast Tx.');
-                }
-            }
-        },
         async sendMsgDeleteSwapRequest({ rootGetters }, { value, fee, memo }) {
             try {
                 const msg = await (await initTxClient(rootGetters)).msgDeleteSwapRequest(value);
@@ -170,6 +154,22 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Send', 'Could not broadcast Tx.');
+                }
+            }
+        },
+        async sendMsgCreateSwapRequest({ rootGetters }, { value, fee, memo }) {
+            try {
+                const msg = await (await initTxClient(rootGetters)).msgCreateSwapRequest(value);
+                const result = await (await initTxClient(rootGetters)).signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e.toString() == 'wallet is required') {
+                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Send', 'Could not broadcast Tx.');
                 }
             }
         },
@@ -187,20 +187,6 @@ export default {
                 }
             }
         },
-        async MsgCreateSwapRequest({ rootGetters }, { value }) {
-            try {
-                const msg = await (await initTxClient(rootGetters)).msgCreateSwapRequest(value);
-                return msg;
-            }
-            catch (e) {
-                if (e.toString() == 'wallet is required') {
-                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Create', 'Could not create message.');
-                }
-            }
-        },
         async MsgDeleteSwapRequest({ rootGetters }, { value }) {
             try {
                 const msg = await (await initTxClient(rootGetters)).msgDeleteSwapRequest(value);
@@ -212,6 +198,20 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Create', 'Could not create message.');
+                }
+            }
+        },
+        async MsgCreateSwapRequest({ rootGetters }, { value }) {
+            try {
+                const msg = await (await initTxClient(rootGetters)).msgCreateSwapRequest(value);
+                return msg;
+            }
+            catch (e) {
+                if (e.toString() == 'wallet is required') {
+                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgCreateSwapRequest:Create', 'Could not create message.');
                 }
             }
         },

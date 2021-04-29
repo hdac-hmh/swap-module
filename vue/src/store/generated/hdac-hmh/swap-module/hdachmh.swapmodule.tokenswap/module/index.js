@@ -3,12 +3,12 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgUpdateSwapRequest } from "./types/tokenswap/tx";
-import { MsgCreateSwapRequest } from "./types/tokenswap/tx";
 import { MsgDeleteSwapRequest } from "./types/tokenswap/tx";
+import { MsgCreateSwapRequest } from "./types/tokenswap/tx";
 const types = [
     ["/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", MsgUpdateSwapRequest],
-    ["/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", MsgCreateSwapRequest],
     ["/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", MsgDeleteSwapRequest],
+    ["/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", MsgCreateSwapRequest],
 ];
 const registry = new Registry(types);
 const defaultFee = {
@@ -23,8 +23,8 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     return {
         signAndBroadcast: (msgs, { fee = defaultFee, memo = null }) => memo ? client.signAndBroadcast(address, msgs, fee, memo) : client.signAndBroadcast(address, msgs, fee),
         msgUpdateSwapRequest: (data) => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", value: data }),
-        msgCreateSwapRequest: (data) => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", value: data }),
         msgDeleteSwapRequest: (data) => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", value: data }),
+        msgCreateSwapRequest: (data) => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {
