@@ -1,4 +1,4 @@
-import { SwapRequest } from "../tokenswap/SwapRequest";
+import { SwapRequest } from "../tokenswap/swap_request";
 import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "hdachmh.swapmodule.tokenswap";
 /** GenesisState defines the tokenswap module's genesis state. */

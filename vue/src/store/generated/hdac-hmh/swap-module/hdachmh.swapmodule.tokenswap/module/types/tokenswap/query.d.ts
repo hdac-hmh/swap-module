@@ -1,5 +1,5 @@
 import { Reader, Writer } from "protobufjs/minimal";
-import { SwapRequest } from "../tokenswap/SwapRequest";
+import { SwapRequest } from "../tokenswap/swap_request";
 import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
 export declare const protobufPackage = "hdachmh.swapmodule.tokenswap";
 /** this line is used by starport scaffolding # 3 */

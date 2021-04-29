@@ -22,7 +22,7 @@ type createSwapRequestRequest struct {
 	SignerAddr     string       `json:"signerAddr"`
 }
 
-func createSwapRequestHandler(clientCtx client.Context) http.HandlerFunc {
+func requestTokenSwapHandler(clientCtx client.Context) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req createSwapRequestRequest
 		if !rest.ReadRESTReq(w, r, clientCtx.LegacyAmino, &req) {

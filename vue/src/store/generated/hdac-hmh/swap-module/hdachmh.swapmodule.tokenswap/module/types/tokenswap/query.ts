@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
-import { SwapRequest } from "../tokenswap/SwapRequest";
+import { SwapRequest } from "../tokenswap/swap_request";
 import {
   PageRequest,
   PageResponse,

@@ -28,8 +28,5 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
-	r.HandleFunc("/tokenswap/SwapRequests", createSwapRequestHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/tokenswap/SwapRequests/{id}", updateSwapRequestHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/tokenswap/SwapRequests/{id}", deleteSwapRequestHandler(clientCtx)).Methods("POST")
-
+	r.HandleFunc("/tokenswap/SwapRequests", requestTokenSwapHandler(clientCtx)).Methods("POST")
 }

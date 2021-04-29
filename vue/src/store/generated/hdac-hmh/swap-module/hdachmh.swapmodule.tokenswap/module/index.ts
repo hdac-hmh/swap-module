@@ -4,15 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateSwapRequest } from "./types/tokenswap/tx";
-import { MsgDeleteSwapRequest } from "./types/tokenswap/tx";
 import { MsgCreateSwapRequest } from "./types/tokenswap/tx";
+import { MsgDeleteSwapRequest } from "./types/tokenswap/tx";
+import { MsgUpdateSwapRequest } from "./types/tokenswap/tx";
 
 
 const types = [
-  ["/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", MsgUpdateSwapRequest],
-  ["/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", MsgDeleteSwapRequest],
   ["/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", MsgCreateSwapRequest],
+  ["/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", MsgDeleteSwapRequest],
+  ["/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", MsgUpdateSwapRequest],
   
 ];
 
@@ -40,9 +40,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee=defaultFee, memo=null }: SignAndBroadcastOptions) => memo?client.signAndBroadcast(address, msgs, fee,memo):client.signAndBroadcast(address, msgs, fee),
-    msgUpdateSwapRequest: (data: MsgUpdateSwapRequest): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", value: data }),
-    msgDeleteSwapRequest: (data: MsgDeleteSwapRequest): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", value: data }),
     msgCreateSwapRequest: (data: MsgCreateSwapRequest): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgCreateSwapRequest", value: data }),
+    msgDeleteSwapRequest: (data: MsgDeleteSwapRequest): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgDeleteSwapRequest", value: data }),
+    msgUpdateSwapRequest: (data: MsgUpdateSwapRequest): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.tokenswap.MsgUpdateSwapRequest", value: data }),
     
   };
 };

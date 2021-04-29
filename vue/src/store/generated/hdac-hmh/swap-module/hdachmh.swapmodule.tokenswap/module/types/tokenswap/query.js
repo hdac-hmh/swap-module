@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
-import { SwapRequest } from "../tokenswap/SwapRequest";
+import { SwapRequest } from "../tokenswap/swap_request";
 import { PageRequest, PageResponse, } from "../cosmos/base/query/v1beta1/pagination";
 export const protobufPackage = "hdachmh.swapmodule.tokenswap";
 const baseQueryGetSwapRequestRequest = { id: 0 };

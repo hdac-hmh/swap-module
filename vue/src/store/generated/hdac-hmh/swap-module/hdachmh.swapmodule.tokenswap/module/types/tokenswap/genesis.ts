@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SwapRequest } from "../tokenswap/SwapRequest";
+import { SwapRequest } from "../tokenswap/swap_request";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "hdachmh.swapmodule.tokenswap";
