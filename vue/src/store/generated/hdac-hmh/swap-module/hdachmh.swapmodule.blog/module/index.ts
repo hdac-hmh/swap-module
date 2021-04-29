@@ -4,20 +4,20 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgDeleteComment } from "./types/blog/tx";
-import { MsgCreatePost } from "./types/blog/tx";
-import { MsgUpdatePost } from "./types/blog/tx";
 import { MsgCreateComment } from "./types/blog/tx";
 import { MsgUpdateComment } from "./types/blog/tx";
+import { MsgCreatePost } from "./types/blog/tx";
+import { MsgUpdatePost } from "./types/blog/tx";
+import { MsgDeleteComment } from "./types/blog/tx";
 import { MsgDeletePost } from "./types/blog/tx";
 
 
 const types = [
-  ["/hdachmh.swapmodule.blog.MsgDeleteComment", MsgDeleteComment],
-  ["/hdachmh.swapmodule.blog.MsgCreatePost", MsgCreatePost],
-  ["/hdachmh.swapmodule.blog.MsgUpdatePost", MsgUpdatePost],
   ["/hdachmh.swapmodule.blog.MsgCreateComment", MsgCreateComment],
   ["/hdachmh.swapmodule.blog.MsgUpdateComment", MsgUpdateComment],
+  ["/hdachmh.swapmodule.blog.MsgCreatePost", MsgCreatePost],
+  ["/hdachmh.swapmodule.blog.MsgUpdatePost", MsgUpdatePost],
+  ["/hdachmh.swapmodule.blog.MsgDeleteComment", MsgDeleteComment],
   ["/hdachmh.swapmodule.blog.MsgDeletePost", MsgDeletePost],
   
 ];
@@ -46,11 +46,11 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee=defaultFee, memo=null }: SignAndBroadcastOptions) => memo?client.signAndBroadcast(address, msgs, fee,memo):client.signAndBroadcast(address, msgs, fee),
-    msgDeleteComment: (data: MsgDeleteComment): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgDeleteComment", value: data }),
-    msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreatePost", value: data }),
-    msgUpdatePost: (data: MsgUpdatePost): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdatePost", value: data }),
     msgCreateComment: (data: MsgCreateComment): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreateComment", value: data }),
     msgUpdateComment: (data: MsgUpdateComment): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdateComment", value: data }),
+    msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreatePost", value: data }),
+    msgUpdatePost: (data: MsgUpdatePost): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdatePost", value: data }),
+    msgDeleteComment: (data: MsgDeleteComment): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgDeleteComment", value: data }),
     msgDeletePost: (data: MsgDeletePost): EncodeObject => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgDeletePost", value: data }),
     
   };

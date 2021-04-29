@@ -4,12 +4,36 @@ package hdachmh.swapmodule.tokenswap;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "tokenswap/SwapRequest.proto";
 
 option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
 
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+	rpc SwapRequest(QueryGetSwapRequestRequest) returns (QueryGetSwapRequestResponse) {
+		option (google.api.http).get = "/hdac-hmh/swapmodule/tokenswap/SwapRequest/{id}";
+	}
+	rpc SwapRequestAll(QueryAllSwapRequestRequest) returns (QueryAllSwapRequestResponse) {
+		option (google.api.http).get = "/hdac-hmh/swapmodule/tokenswap/SwapRequest";
+	}
+
 }
 
 // this line is used by starport scaffolding # 3
+message QueryGetSwapRequestRequest {
+	uint64 id = 1;
+}
+
+message QueryGetSwapRequestResponse {
+	SwapRequest SwapRequest = 1;
+}
+
+message QueryAllSwapRequestRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSwapRequestResponse {
+	repeated SwapRequest SwapRequest = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

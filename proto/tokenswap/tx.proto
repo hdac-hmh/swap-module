@@ -8,6 +8,40 @@ option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateSwapRequest(MsgCreateSwapRequest) returns (MsgCreateSwapRequestResponse);
+  rpc UpdateSwapRequest(MsgUpdateSwapRequest) returns (MsgUpdateSwapRequestResponse);
+  rpc DeleteSwapRequest(MsgDeleteSwapRequest) returns (MsgDeleteSwapRequestResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgCreateSwapRequest {
+  string creator = 1;
+  string burnTxHash = 2;
+  string ethereumSender = 3;
+  string receiver = 4;
+  string amountEng = 5;
+  string signerAddr = 6;
+}
+
+message MsgCreateSwapRequestResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateSwapRequest {
+  string creator = 1;
+  uint64 id = 2;
+  string burnTxHash = 3;
+  string ethereumSender = 4;
+  string receiver = 5;
+  string amountEng = 6;
+  string signerAddr = 7;
+}
+
+message MsgUpdateSwapRequestResponse { }
+
+message MsgDeleteSwapRequest {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteSwapRequestResponse { }
