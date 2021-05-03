@@ -1,0 +1,13 @@
+syntax = "proto3";
+package hdachmh.swapmodule.mint;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/hdac-hmh/swap-module/x/mint/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+// this line is used by starport scaffolding # proto/tx/message

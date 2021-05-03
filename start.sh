@@ -1,5 +1,5 @@
 #!/bin/bash
-APPNAME="swap-moduled"
-APPFOLDER="swapmodule"
+APPNAME="swapd"
+APPFOLDER="swapm"
 
 $APPNAME start
