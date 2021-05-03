@@ -84,9 +84,6 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	"github.com/hdac-hmh/swap-module/x/blog"
-	blogkeeper "github.com/hdac-hmh/swap-module/x/blog/keeper"
-	blogtypes "github.com/hdac-hmh/swap-module/x/blog/types"
 	"github.com/hdac-hmh/swap-module/x/burner"
 	burnerkeeper "github.com/hdac-hmh/swap-module/x/burner/keeper"
 	burnertypes "github.com/hdac-hmh/swap-module/x/burner/types"
@@ -96,13 +93,6 @@ import (
 	"github.com/hdac-hmh/swap-module/x/tokenswap"
 	tokenswapkeeper "github.com/hdac-hmh/swap-module/x/tokenswap/keeper"
 	tokenswaptypes "github.com/hdac-hmh/swap-module/x/tokenswap/types"
-	"github.com/hdac-hmh/swap-module/x/voter"
-	voterkeeper "github.com/hdac-hmh/swap-module/x/voter/keeper"
-	votertypes "github.com/hdac-hmh/swap-module/x/voter/types"
-
-	"github.com/hdac-hmh/swap-module/x/blogibc"
-	blogibckeeper "github.com/hdac-hmh/swap-module/x/blogibc/keeper"
-	blogibctypes "github.com/hdac-hmh/swap-module/x/blogibc/types"
 )
 
 const Name = "swapmodule"
@@ -152,9 +142,6 @@ var (
 		burner.AppModuleBasic{},
 		minter.AppModuleBasic{},
 		tokenswap.AppModuleBasic{},
-		voter.AppModuleBasic{},
-		blog.AppModuleBasic{},
-		blogibc.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -222,17 +209,9 @@ type App struct {
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	burnerKeeper burnerkeeper.Keeper
-
-	minterKeeper minterkeeper.Keeper
-
+	burnerKeeper    burnerkeeper.Keeper
+	minterKeeper    minterkeeper.Keeper
 	tokenswapKeeper tokenswapkeeper.Keeper
-
-	voterKeeper voterkeeper.Keeper
-
-	blogKeeper          blogkeeper.Keeper
-	ScopedBlogibcKeeper capabilitykeeper.ScopedKeeper
-	blogibcKeeper       blogibckeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -265,10 +244,6 @@ func New(
 		burnertypes.StoreKey,
 		mintertypes.StoreKey,
 		tokenswaptypes.StoreKey,
-		votertypes.StoreKey,
-		blogtypes.StoreKey,
-		blogibctypes.StoreKey,
-		blogtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -382,32 +357,6 @@ func New(
 	)
 	tokenswapModule := tokenswap.NewAppModule(appCodec, app.tokenswapKeeper)
 
-	app.voterKeeper = *voterkeeper.NewKeeper(
-		appCodec,
-		keys[votertypes.StoreKey],
-		keys[votertypes.MemStoreKey],
-		app.BankKeeper,
-	)
-	voterModule := voter.NewAppModule(appCodec, app.voterKeeper)
-
-	app.blogKeeper = *blogkeeper.NewKeeper(
-		appCodec,
-		keys[blogtypes.StoreKey],
-		keys[blogtypes.MemStoreKey],
-	)
-	blogModule := blog.NewAppModule(appCodec, app.blogKeeper)
-	scopedBlogibcKeeper := app.CapabilityKeeper.ScopeToModule(blogibctypes.ModuleName)
-	app.ScopedBlogibcKeeper = scopedBlogibcKeeper
-	app.blogibcKeeper = *blogibckeeper.NewKeeper(
-		appCodec,
-		keys[blogibctypes.StoreKey],
-		keys[blogibctypes.MemStoreKey],
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedBlogibcKeeper,
-	)
-	blogibcModule := blogibc.NewAppModule(appCodec, app.blogibcKeeper)
-
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter,
@@ -417,7 +366,6 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
-	ibcRouter.AddRoute(blogibctypes.ModuleName, blogibcModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -453,9 +401,6 @@ func New(
 		burnerModule,
 		minterModule,
 		tokenswapModule,
-		voterModule,
-		blogModule,
-		blogibcModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -492,10 +437,6 @@ func New(
 		burnertypes.ModuleName,
 		mintertypes.ModuleName,
 		tokenswaptypes.ModuleName,
-		votertypes.ModuleName,
-		blogtypes.ModuleName,
-		blogibctypes.ModuleName,
-		blogtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -681,9 +622,6 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(burnertypes.ModuleName)
 	paramsKeeper.Subspace(mintertypes.ModuleName)
 	paramsKeeper.Subspace(tokenswaptypes.ModuleName)
-	paramsKeeper.Subspace(votertypes.ModuleName)
-	paramsKeeper.Subspace(blogtypes.ModuleName)
-	paramsKeeper.Subspace(blogibctypes.ModuleName)
 
 	return paramsKeeper
 }
