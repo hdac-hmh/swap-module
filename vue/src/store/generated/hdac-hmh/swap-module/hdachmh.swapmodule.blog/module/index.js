@@ -2,19 +2,19 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreatePost } from "./types/blog/tx";
 import { MsgUpdatePost } from "./types/blog/tx";
-import { MsgCreateComment } from "./types/blog/tx";
 import { MsgDeleteComment } from "./types/blog/tx";
-import { MsgUpdateComment } from "./types/blog/tx";
 import { MsgDeletePost } from "./types/blog/tx";
+import { MsgCreateComment } from "./types/blog/tx";
+import { MsgUpdateComment } from "./types/blog/tx";
+import { MsgCreatePost } from "./types/blog/tx";
 const types = [
-    ["/hdachmh.swapmodule.blog.MsgCreatePost", MsgCreatePost],
     ["/hdachmh.swapmodule.blog.MsgUpdatePost", MsgUpdatePost],
-    ["/hdachmh.swapmodule.blog.MsgCreateComment", MsgCreateComment],
     ["/hdachmh.swapmodule.blog.MsgDeleteComment", MsgDeleteComment],
-    ["/hdachmh.swapmodule.blog.MsgUpdateComment", MsgUpdateComment],
     ["/hdachmh.swapmodule.blog.MsgDeletePost", MsgDeletePost],
+    ["/hdachmh.swapmodule.blog.MsgCreateComment", MsgCreateComment],
+    ["/hdachmh.swapmodule.blog.MsgUpdateComment", MsgUpdateComment],
+    ["/hdachmh.swapmodule.blog.MsgCreatePost", MsgCreatePost],
 ];
 const registry = new Registry(types);
 const defaultFee = {
@@ -28,12 +28,12 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee = defaultFee, memo = null }) => memo ? client.signAndBroadcast(address, msgs, fee, memo) : client.signAndBroadcast(address, msgs, fee),
-        msgCreatePost: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreatePost", value: data }),
         msgUpdatePost: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdatePost", value: data }),
-        msgCreateComment: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreateComment", value: data }),
         msgDeleteComment: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgDeleteComment", value: data }),
-        msgUpdateComment: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdateComment", value: data }),
         msgDeletePost: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgDeletePost", value: data }),
+        msgCreateComment: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreateComment", value: data }),
+        msgUpdateComment: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgUpdateComment", value: data }),
+        msgCreatePost: (data) => ({ typeUrl: "/hdachmh.swapmodule.blog.MsgCreatePost", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {

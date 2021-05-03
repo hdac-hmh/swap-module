@@ -87,12 +87,12 @@ import (
 	"github.com/hdac-hmh/swap-module/x/blog"
 	blogkeeper "github.com/hdac-hmh/swap-module/x/blog/keeper"
 	blogtypes "github.com/hdac-hmh/swap-module/x/blog/types"
-	"github.com/hdac-hmh/swap-module/x/burn"
-	burnkeeper "github.com/hdac-hmh/swap-module/x/burn/keeper"
-	burntypes "github.com/hdac-hmh/swap-module/x/burn/types"
-	"github.com/hdac-hmh/swap-module/x/mint"
-	mintkeeper "github.com/hdac-hmh/swap-module/x/mint/keeper"
-	minttypes "github.com/hdac-hmh/swap-module/x/mint/types"
+	"github.com/hdac-hmh/swap-module/x/burner"
+	burnerkeeper "github.com/hdac-hmh/swap-module/x/burner/keeper"
+	burnertypes "github.com/hdac-hmh/swap-module/x/burner/types"
+	"github.com/hdac-hmh/swap-module/x/minter"
+	minterkeeper "github.com/hdac-hmh/swap-module/x/minter/keeper"
+	mintertypes "github.com/hdac-hmh/swap-module/x/minter/types"
 	"github.com/hdac-hmh/swap-module/x/tokenswap"
 	tokenswapkeeper "github.com/hdac-hmh/swap-module/x/tokenswap/keeper"
 	tokenswaptypes "github.com/hdac-hmh/swap-module/x/tokenswap/types"
@@ -149,8 +149,8 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		burn.AppModuleBasic{},
-		mint.AppModuleBasic{},
+		burner.AppModuleBasic{},
+		minter.AppModuleBasic{},
 		tokenswap.AppModuleBasic{},
 		voter.AppModuleBasic{},
 		blog.AppModuleBasic{},
@@ -222,9 +222,9 @@ type App struct {
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	burnKeeper burnkeeper.Keeper
+	burnerKeeper burnerkeeper.Keeper
 
-	mintKeeper mintkeeper.Keeper
+	minterKeeper minterkeeper.Keeper
 
 	tokenswapKeeper tokenswapkeeper.Keeper
 
@@ -262,8 +262,8 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		burntypes.StoreKey,
-		minttypes.StoreKey,
+		burnertypes.StoreKey,
+		mintertypes.StoreKey,
 		tokenswaptypes.StoreKey,
 		votertypes.StoreKey,
 		blogtypes.StoreKey,
@@ -360,19 +360,19 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.burnKeeper = *burnkeeper.NewKeeper(
+	app.burnerKeeper = *burnerkeeper.NewKeeper(
 		appCodec,
-		keys[burntypes.StoreKey],
-		keys[burntypes.MemStoreKey],
+		keys[burnertypes.StoreKey],
+		keys[burnertypes.MemStoreKey],
 	)
-	burnModule := burn.NewAppModule(appCodec, app.burnKeeper)
+	burnerModule := burner.NewAppModule(appCodec, app.burnerKeeper)
 
-	app.mintKeeper = *mintkeeper.NewKeeper(
+	app.minterKeeper = *minterkeeper.NewKeeper(
 		appCodec,
-		keys[minttypes.StoreKey],
-		keys[minttypes.MemStoreKey],
+		keys[mintertypes.StoreKey],
+		keys[mintertypes.MemStoreKey],
 	)
-	mintModule := mint.NewAppModule(appCodec, app.mintKeeper)
+	minterModule := minter.NewAppModule(appCodec, app.minterKeeper)
 
 	app.tokenswapKeeper = *tokenswapkeeper.NewKeeper(
 		appCodec,
@@ -450,8 +450,8 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		burnModule,
-		mintModule,
+		burnerModule,
+		minterModule,
 		tokenswapModule,
 		voterModule,
 		blogModule,
@@ -489,8 +489,8 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		burntypes.ModuleName,
-		minttypes.ModuleName,
+		burnertypes.ModuleName,
+		mintertypes.ModuleName,
 		tokenswaptypes.ModuleName,
 		votertypes.ModuleName,
 		blogtypes.ModuleName,
@@ -678,8 +678,8 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(burntypes.ModuleName)
-	paramsKeeper.Subspace(minttypes.ModuleName)
+	paramsKeeper.Subspace(burnertypes.ModuleName)
+	paramsKeeper.Subspace(mintertypes.ModuleName)
 	paramsKeeper.Subspace(tokenswaptypes.ModuleName)
 	paramsKeeper.Subspace(votertypes.ModuleName)
 	paramsKeeper.Subspace(blogtypes.ModuleName)

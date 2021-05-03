@@ -1,0 +1,12 @@
+syntax = "proto3";
+package hdachmh.swapmodule.burner;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/hdac-hmh/swap-module/x/burner/types";
+
+// GenesisState defines the burner module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+    // this line is used by starport scaffolding # ibc/genesis/proto
+}
