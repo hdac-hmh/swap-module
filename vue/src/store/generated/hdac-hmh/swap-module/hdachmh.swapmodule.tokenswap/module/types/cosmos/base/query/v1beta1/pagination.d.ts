@@ -1,12 +1,12 @@
 import { Writer, Reader } from "protobufjs/minimal";
-export declare const protobufPackage = "cosmos.base.query.v1beta1";
+export declare const protobufPackage = "cosmos.query";
 /**
  * PageRequest is to be embedded in gRPC request messages for efficient
  * pagination. Ex:
  *
  *  message SomeRequest {
  *          Foo some_parameter = 1;
- *          PageRequest pagination = 2;
+ *          PageRequest page = 2;
  *  }
  */
 export interface PageRequest {
@@ -29,15 +29,14 @@ export interface PageRequest {
     limit: number;
     /**
      * count_total is set to true  to indicate that the result set should include
-     * a count of the total number of items available for pagination in UIs.
-     * count_total is only respected when offset is used. It is ignored when key
-     * is set.
+     * a count of the total number of items available for pagination in UIs. count_total
+     * is only respected when offset is used. It is ignored when key is set.
      */
     countTotal: boolean;
 }
 /**
- * PageResponse is to be embedded in gRPC response messages where the
- * corresponding request message has used PageRequest.
+ * PageResponse is to be embedded in gRPC response messages where the corresponding
+ * request message has used PageRequest
  *
  *  message SomeResponse {
  *          repeated Bar results = 1;

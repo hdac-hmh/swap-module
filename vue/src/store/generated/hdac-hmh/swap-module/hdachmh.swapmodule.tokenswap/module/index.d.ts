@@ -1,9 +1,9 @@
 import { StdFee } from "@cosmjs/launchpad";
 import { OfflineSigner, EncodeObject } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateSwapRequest } from "./types/tokenswap/tx";
-import { MsgDeleteSwapRequest } from "./types/tokenswap/tx";
 import { MsgCreateSwapRequest } from "./types/tokenswap/tx";
+import { MsgDeleteSwapRequest } from "./types/tokenswap/tx";
+import { MsgUpdateSwapRequest } from "./types/tokenswap/tx";
 interface TxClientOptions {
     addr: string;
 }
@@ -13,9 +13,9 @@ interface SignAndBroadcastOptions {
 }
 declare const txClient: (wallet: OfflineSigner, { addr: addr }?: TxClientOptions) => Promise<{
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions) => Promise<import("@cosmjs/stargate").BroadcastTxResponse>;
-    msgUpdateSwapRequest: (data: MsgUpdateSwapRequest) => EncodeObject;
-    msgDeleteSwapRequest: (data: MsgDeleteSwapRequest) => EncodeObject;
     msgCreateSwapRequest: (data: MsgCreateSwapRequest) => EncodeObject;
+    msgDeleteSwapRequest: (data: MsgDeleteSwapRequest) => EncodeObject;
+    msgUpdateSwapRequest: (data: MsgUpdateSwapRequest) => EncodeObject;
 }>;
 interface QueryClientOptions {
     addr: string;

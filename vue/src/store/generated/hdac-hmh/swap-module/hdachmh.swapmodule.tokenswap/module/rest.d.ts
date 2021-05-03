@@ -3,51 +3,13 @@ export interface ProtobufAny {
     /** @format byte */
     value?: string;
 }
-export interface RpcStatus {
-    /** @format int32 */
-    code?: number;
-    message?: string;
-    details?: ProtobufAny[];
-}
-export interface TokenswapMsgCreateSwapRequestResponse {
-    /** @format uint64 */
-    id?: string;
-}
-export declare type TokenswapMsgDeleteSwapRequestResponse = object;
-export declare type TokenswapMsgUpdateSwapRequestResponse = object;
-export interface TokenswapQueryAllSwapRequestResponse {
-    SwapRequest?: TokenswapSwapRequest[];
-    /**
-     * PageResponse is to be embedded in gRPC response messages where the
-     * corresponding request message has used PageRequest.
-     *
-     *  message SomeResponse {
-     *          repeated Bar results = 1;
-     *          PageResponse page = 2;
-     *  }
-     */
-    pagination?: V1Beta1PageResponse;
-}
-export interface TokenswapQueryGetSwapRequestResponse {
-    SwapRequest?: TokenswapSwapRequest;
-}
-export interface TokenswapSwapRequest {
-    creator?: string;
-    /** @format uint64 */
-    id?: string;
-    burnTxHash?: string;
-    ethereumSender?: string;
-    receiver?: string;
-    amountEng?: string;
-    signerAddr?: string;
-}
 /**
 * message SomeRequest {
          Foo some_parameter = 1;
-         PageRequest pagination = 2;
+         PageRequest page = 2;
  }
 */
-export interface V1Beta1PageRequest {
+export interface QueryPageRequest {
     /**
      * key is a value returned in PageResponse.next_key to begin
      * querying the next page most efficiently. Only one of offset or key
@@ -70,26 +32,57 @@ export interface V1Beta1PageRequest {
     limit?: string;
     /**
      * count_total is set to true  to indicate that the result set should include
-     * a count of the total number of items available for pagination in UIs.
-     * count_total is only respected when offset is used. It is ignored when key
-     * is set.
+     * a count of the total number of items available for pagination in UIs. count_total
+     * is only respected when offset is used. It is ignored when key is set.
      */
     countTotal?: boolean;
 }
 /**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
-
- message SomeResponse {
+* message SomeResponse {
          repeated Bar results = 1;
          PageResponse page = 2;
  }
 */
-export interface V1Beta1PageResponse {
+export interface QueryPageResponse {
     /** @format byte */
     nextKey?: string;
     /** @format uint64 */
     total?: string;
+}
+export interface RpcStatus {
+    /** @format int32 */
+    code?: number;
+    message?: string;
+    details?: ProtobufAny[];
+}
+export interface TokenswapMsgCreateSwapRequestResponse {
+    /** @format uint64 */
+    id?: string;
+}
+export declare type TokenswapMsgDeleteSwapRequestResponse = object;
+export declare type TokenswapMsgUpdateSwapRequestResponse = object;
+export interface TokenswapQueryAllSwapRequestResponse {
+    SwapRequest?: TokenswapSwapRequest[];
+    /**
+     * message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: QueryPageResponse;
+}
+export interface TokenswapQueryGetSwapRequestResponse {
+    SwapRequest?: TokenswapSwapRequest;
+}
+export interface TokenswapSwapRequest {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
+    burnTxHash?: string;
+    ethereumSender?: string;
+    receiver?: string;
+    amountEng?: string;
+    signerAddr?: string;
 }
 export declare type QueryParamsType = Record<string | number, any>;
 export declare type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;

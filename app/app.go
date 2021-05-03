@@ -139,6 +139,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		tokenswap.AppModuleBasic{},
 		burner.AppModuleBasic{},
 		minter.AppModuleBasic{},
 		tokenswap.AppModuleBasic{},
@@ -208,7 +209,6 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
-
 	burnerKeeper    burnerkeeper.Keeper
 	minterKeeper    minterkeeper.Keeper
 	tokenswapKeeper tokenswapkeeper.Keeper
@@ -241,6 +241,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		tokenswaptypes.StoreKey,
 		burnertypes.StoreKey,
 		mintertypes.StoreKey,
 		tokenswaptypes.StoreKey,
@@ -335,6 +336,13 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.tokenswapKeeper = *tokenswapkeeper.NewKeeper(
+		appCodec,
+		keys[tokenswaptypes.StoreKey],
+		keys[tokenswaptypes.MemStoreKey],
+	)
+	tokenswapModule := tokenswap.NewAppModule(appCodec, app.tokenswapKeeper)
+
 	app.burnerKeeper = *burnerkeeper.NewKeeper(
 		appCodec,
 		keys[burnertypes.StoreKey],
@@ -348,14 +356,6 @@ func New(
 		keys[mintertypes.MemStoreKey],
 	)
 	minterModule := minter.NewAppModule(appCodec, app.minterKeeper)
-
-	app.tokenswapKeeper = *tokenswapkeeper.NewKeeper(
-		appCodec,
-		keys[tokenswaptypes.StoreKey],
-		keys[tokenswaptypes.MemStoreKey],
-		app.BankKeeper,
-	)
-	tokenswapModule := tokenswap.NewAppModule(appCodec, app.tokenswapKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -398,6 +398,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+		tokenswapModule,
 		burnerModule,
 		minterModule,
 		tokenswapModule,
@@ -434,6 +435,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		tokenswaptypes.ModuleName,
 		burnertypes.ModuleName,
 		mintertypes.ModuleName,
 		tokenswaptypes.ModuleName,
@@ -619,6 +621,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(tokenswaptypes.ModuleName)
 	paramsKeeper.Subspace(burnertypes.ModuleName)
 	paramsKeeper.Subspace(mintertypes.ModuleName)
 	paramsKeeper.Subspace(tokenswaptypes.ModuleName)

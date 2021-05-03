@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
-export const protobufPackage = "cosmos.base.query.v1beta1";
+export const protobufPackage = "cosmos.query";
 const basePageRequest = { offset: 0, limit: 0, countTotal: false };
 export const PageRequest = {
     encode(message, writer = Writer.create()) {
