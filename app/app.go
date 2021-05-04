@@ -350,12 +350,12 @@ func New(
 	)
 	burnerModule := burner.NewAppModule(appCodec, app.burnerKeeper)
 
-	app.minterKeeper = *minterkeeper.NewKeeper(
-		appCodec,
-		keys[mintertypes.StoreKey],
-		keys[mintertypes.MemStoreKey],
-	)
-	minterModule := minter.NewAppModule(appCodec, app.minterKeeper)
+	// app.minterKeeper = *minterkeeper.NewKeeper(
+	// 	appCodec,
+	// 	keys[mintertypes.StoreKey],
+
+	// )
+	// minterModule := minter.NewAppModule(appCodec, app.minterKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -400,7 +400,7 @@ func New(
 		// this line is used by starport scaffolding # stargate/app/appModule
 		tokenswapModule,
 		burnerModule,
-		minterModule,
+		//minterModule,
 		tokenswapModule,
 	)
 
@@ -624,7 +624,6 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(tokenswaptypes.ModuleName)
 	paramsKeeper.Subspace(burnertypes.ModuleName)
 	paramsKeeper.Subspace(mintertypes.ModuleName)
-	paramsKeeper.Subspace(tokenswaptypes.ModuleName)
 
 	return paramsKeeper
 }

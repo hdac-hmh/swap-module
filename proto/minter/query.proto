@@ -4,12 +4,22 @@ package hdachmh.swapmodule.minter;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "minter/mint.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/hdac-hmh/swap-module/x/minter/types";
 
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+    rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+        option (google.api.http).get = "/swapmoduled/mint/params";
+    }
 }
 
 // this line is used by starport scaffolding # 3
+message QueryParamsRequest {}
+
+message QueryParamsResponse {
+    Params params = 1 [(gogoproto.nullable) = false];
+}

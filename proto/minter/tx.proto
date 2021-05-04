@@ -2,12 +2,23 @@ syntax = "proto3";
 package hdachmh.swapmodule.minter;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/hdac-hmh/swap-module/x/minter/types";
+option (gogoproto.goproto_getters_all) = false;
 
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+    rpc Mint(MsgMint) returns (MsgMintResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgMint {
+    option (gogoproto.equal) = true;
+
+    uint64 amount = 1;
+    string operator = 2;
+}
+
+message MsgMintResponse {}

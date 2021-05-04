@@ -1,0 +1,14 @@
+syntax = "proto3";
+package hdachmh.swapmodule.minter;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/hdac-hmh/swap-module/x/minter/types";
+option (gogoproto.goproto_getters_all) = false;
+
+message Params {
+    option (gogoproto.equal) = true;
+    option (gogoproto.goproto_stringer) = false;
+
+    string mint_denom = 1 [(gogoproto.moretags) = "yaml:\"mint_denom\""];
+}

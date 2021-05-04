@@ -2,11 +2,14 @@ syntax = "proto3";
 package hdachmh.swapmodule.minter;
 
 // this line is used by starport scaffolding # genesis/proto/import
+import "minter/mint.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/hdac-hmh/swap-module/x/minter/types";
 
 // GenesisState defines the minter module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
+    Params params = 1 [(gogoproto.nullable) = false];
     // this line is used by starport scaffolding # ibc/genesis/proto
 }
