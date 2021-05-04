@@ -1,8 +1,8 @@
 package types
 
 import (
-// this line is used by starport scaffolding # genesis/types/import
-// this line is used by starport scaffolding # ibc/genesistype/import
+	"fmt"
+	// this line is used by starport scaffolding # ibc/genesistype/import
 )
 
 // DefaultIndex is the default capability global index
@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		// this line is used by starport scaffolding # ibc/genesistype/default
 		// this line is used by starport scaffolding # genesis/types/default
+		SwapRequestList: []*SwapRequest{},
 	}
 }
 
@@ -22,6 +23,15 @@ func (gs GenesisState) Validate() error {
 	// this line is used by starport scaffolding # ibc/genesistype/validate
 
 	// this line is used by starport scaffolding # genesis/types/validate
+	// Check for duplicated ID in SwapRequest
+	SwapRequestIdMap := make(map[uint64]bool)
+
+	for _, elem := range gs.SwapRequestList {
+		if _, ok := SwapRequestIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for SwapRequest")
+		}
+		SwapRequestIdMap[elem.Id] = true
+	}
 
 	return nil
 }
