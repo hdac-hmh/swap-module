@@ -3,7 +3,6 @@ package minter
 import (
 	"encoding/json"
 	"fmt"
-
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -147,9 +146,9 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONMarshaler, gs jso
 	// Initialize global index to index in genesis state
 	cdc.MustUnmarshalJSON(gs, &genState)
 
-	return InitGenesis(ctx, am.keeper, genState)
+	InitGenesis(ctx, am.keeper, genState)
 
-	//return []abci.ValidatorUpdate{}
+	return []abci.ValidatorUpdate{}
 }
 
 // ExportGenesis returns the capability module's exported genesis state as raw JSON bytes.
