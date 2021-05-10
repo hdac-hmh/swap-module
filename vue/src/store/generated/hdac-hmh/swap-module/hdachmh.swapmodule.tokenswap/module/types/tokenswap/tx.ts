@@ -5,6 +5,32 @@ import * as Long from "long";
 export const protobufPackage = "hdachmh.swapmodule.tokenswap";
 
 /** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgCreateToken {
+  creator: string;
+  address: string;
+  coin: number;
+}
+
+export interface MsgCreateTokenResponse {
+  id: number;
+}
+
+export interface MsgUpdateToken {
+  creator: string;
+  id: number;
+  address: string;
+  coin: number;
+}
+
+export interface MsgUpdateTokenResponse {}
+
+export interface MsgDeleteToken {
+  creator: string;
+  id: number;
+}
+
+export interface MsgDeleteTokenResponse {}
+
 export interface MsgCreateSwapRequest {
   creator: string;
   burnTxHash: string;
@@ -36,6 +62,409 @@ export interface MsgDeleteSwapRequest {
 }
 
 export interface MsgDeleteSwapRequestResponse {}
+
+const baseMsgCreateToken: object = { creator: "", address: "", coin: 0 };
+
+export const MsgCreateToken = {
+  encode(message: MsgCreateToken, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.address !== "") {
+      writer.uint32(18).string(message.address);
+    }
+    if (message.coin !== 0) {
+      writer.uint32(24).int32(message.coin);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateToken {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateToken } as MsgCreateToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.address = reader.string();
+          break;
+        case 3:
+          message.coin = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateToken {
+    const message = { ...baseMsgCreateToken } as MsgCreateToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    if (object.coin !== undefined && object.coin !== null) {
+      message.coin = Number(object.coin);
+    } else {
+      message.coin = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateToken): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.address !== undefined && (obj.address = message.address);
+    message.coin !== undefined && (obj.coin = message.coin);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreateToken>): MsgCreateToken {
+    const message = { ...baseMsgCreateToken } as MsgCreateToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    if (object.coin !== undefined && object.coin !== null) {
+      message.coin = object.coin;
+    } else {
+      message.coin = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateTokenResponse: object = { id: 0 };
+
+export const MsgCreateTokenResponse = {
+  encode(
+    message: MsgCreateTokenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateTokenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateTokenResponse } as MsgCreateTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateTokenResponse {
+    const message = { ...baseMsgCreateTokenResponse } as MsgCreateTokenResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateTokenResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateTokenResponse>
+  ): MsgCreateTokenResponse {
+    const message = { ...baseMsgCreateTokenResponse } as MsgCreateTokenResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateToken: object = { creator: "", id: 0, address: "", coin: 0 };
+
+export const MsgUpdateToken = {
+  encode(message: MsgUpdateToken, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.address !== "") {
+      writer.uint32(26).string(message.address);
+    }
+    if (message.coin !== 0) {
+      writer.uint32(32).int32(message.coin);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateToken {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUpdateToken } as MsgUpdateToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.address = reader.string();
+          break;
+        case 4:
+          message.coin = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateToken {
+    const message = { ...baseMsgUpdateToken } as MsgUpdateToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    if (object.coin !== undefined && object.coin !== null) {
+      message.coin = Number(object.coin);
+    } else {
+      message.coin = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateToken): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    message.address !== undefined && (obj.address = message.address);
+    message.coin !== undefined && (obj.coin = message.coin);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgUpdateToken>): MsgUpdateToken {
+    const message = { ...baseMsgUpdateToken } as MsgUpdateToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    if (object.coin !== undefined && object.coin !== null) {
+      message.coin = object.coin;
+    } else {
+      message.coin = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateTokenResponse: object = {};
+
+export const MsgUpdateTokenResponse = {
+  encode(_: MsgUpdateTokenResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateTokenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUpdateTokenResponse } as MsgUpdateTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateTokenResponse {
+    const message = { ...baseMsgUpdateTokenResponse } as MsgUpdateTokenResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateTokenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgUpdateTokenResponse>): MsgUpdateTokenResponse {
+    const message = { ...baseMsgUpdateTokenResponse } as MsgUpdateTokenResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteToken: object = { creator: "", id: 0 };
+
+export const MsgDeleteToken = {
+  encode(message: MsgDeleteToken, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgDeleteToken {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgDeleteToken } as MsgDeleteToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteToken {
+    const message = { ...baseMsgDeleteToken } as MsgDeleteToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteToken): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgDeleteToken>): MsgDeleteToken {
+    const message = { ...baseMsgDeleteToken } as MsgDeleteToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteTokenResponse: object = {};
+
+export const MsgDeleteTokenResponse = {
+  encode(_: MsgDeleteTokenResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgDeleteTokenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgDeleteTokenResponse } as MsgDeleteTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteTokenResponse {
+    const message = { ...baseMsgDeleteTokenResponse } as MsgDeleteTokenResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteTokenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgDeleteTokenResponse>): MsgDeleteTokenResponse {
+    const message = { ...baseMsgDeleteTokenResponse } as MsgDeleteTokenResponse;
+    return message;
+  },
+};
 
 const baseMsgCreateSwapRequest: object = {
   creator: "",
@@ -608,6 +1037,9 @@ export const MsgDeleteSwapRequestResponse = {
 /** Msg defines the Msg service. */
 export interface Msg {
   /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateToken(request: MsgCreateToken): Promise<MsgCreateTokenResponse>;
+  UpdateToken(request: MsgUpdateToken): Promise<MsgUpdateTokenResponse>;
+  DeleteToken(request: MsgDeleteToken): Promise<MsgDeleteTokenResponse>;
   CreateSwapRequest(
     request: MsgCreateSwapRequest
   ): Promise<MsgCreateSwapRequestResponse>;
@@ -624,6 +1056,42 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
+  CreateToken(request: MsgCreateToken): Promise<MsgCreateTokenResponse> {
+    const data = MsgCreateToken.encode(request).finish();
+    const promise = this.rpc.request(
+      "hdachmh.swapmodule.tokenswap.Msg",
+      "CreateToken",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateTokenResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateToken(request: MsgUpdateToken): Promise<MsgUpdateTokenResponse> {
+    const data = MsgUpdateToken.encode(request).finish();
+    const promise = this.rpc.request(
+      "hdachmh.swapmodule.tokenswap.Msg",
+      "UpdateToken",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateTokenResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteToken(request: MsgDeleteToken): Promise<MsgDeleteTokenResponse> {
+    const data = MsgDeleteToken.encode(request).finish();
+    const promise = this.rpc.request(
+      "hdachmh.swapmodule.tokenswap.Msg",
+      "DeleteToken",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteTokenResponse.decode(new Reader(data))
+    );
+  }
+
   CreateSwapRequest(
     request: MsgCreateSwapRequest
   ): Promise<MsgCreateSwapRequestResponse> {

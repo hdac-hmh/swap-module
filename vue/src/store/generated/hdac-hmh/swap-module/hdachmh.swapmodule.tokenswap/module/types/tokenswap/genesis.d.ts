@@ -1,9 +1,12 @@
+import { Token } from "../tokenswap/token";
 import { SwapRequest } from "../tokenswap/swap_request";
 import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "hdachmh.swapmodule.tokenswap";
 /** GenesisState defines the tokenswap module's genesis state. */
 export interface GenesisState {
     /** this line is used by starport scaffolding # genesis/proto/state */
+    tokenList: Token[];
+    /** this line is used by starport scaffolding # genesis/proto/stateField */
     SwapRequestList: SwapRequest[];
 }
 export declare const GenesisState: {

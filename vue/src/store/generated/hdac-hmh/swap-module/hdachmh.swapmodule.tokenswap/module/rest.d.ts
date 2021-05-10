@@ -3,13 +3,75 @@ export interface ProtobufAny {
     /** @format byte */
     value?: string;
 }
+export interface RpcStatus {
+    /** @format int32 */
+    code?: number;
+    message?: string;
+    details?: ProtobufAny[];
+}
+export interface TokenswapMsgCreateSwapRequestResponse {
+    /** @format uint64 */
+    id?: string;
+}
+export interface TokenswapMsgCreateTokenResponse {
+    /** @format uint64 */
+    id?: string;
+}
+export declare type TokenswapMsgDeleteSwapRequestResponse = object;
+export declare type TokenswapMsgDeleteTokenResponse = object;
+export declare type TokenswapMsgUpdateSwapRequestResponse = object;
+export declare type TokenswapMsgUpdateTokenResponse = object;
+export interface TokenswapQueryAllSwapRequestResponse {
+    SwapRequest?: TokenswapSwapRequest[];
+    /**
+     * message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface TokenswapQueryAllTokenResponse {
+    Token?: TokenswapToken[];
+    /**
+     * message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface TokenswapQueryGetSwapRequestResponse {
+    SwapRequest?: TokenswapSwapRequest;
+}
+export interface TokenswapQueryGetTokenResponse {
+    Token?: TokenswapToken;
+}
+export interface TokenswapSwapRequest {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
+    burnTxHash?: string;
+    ethereumSender?: string;
+    receiver?: string;
+    amountEng?: string;
+    signerAddr?: string;
+}
+export interface TokenswapToken {
+    creator?: string;
+    /** @format uint64 */
+    id?: string;
+    address?: string;
+    /** @format int32 */
+    coin?: number;
+}
 /**
 * message SomeRequest {
          Foo some_parameter = 1;
          PageRequest page = 2;
  }
 */
-export interface QueryPageRequest {
+export interface V1Beta1PageRequest {
     /**
      * key is a value returned in PageResponse.next_key to begin
      * querying the next page most efficiently. Only one of offset or key
@@ -43,46 +105,11 @@ export interface QueryPageRequest {
          PageResponse page = 2;
  }
 */
-export interface QueryPageResponse {
+export interface V1Beta1PageResponse {
     /** @format byte */
     nextKey?: string;
     /** @format uint64 */
     total?: string;
-}
-export interface RpcStatus {
-    /** @format int32 */
-    code?: number;
-    message?: string;
-    details?: ProtobufAny[];
-}
-export interface TokenswapMsgCreateSwapRequestResponse {
-    /** @format uint64 */
-    id?: string;
-}
-export declare type TokenswapMsgDeleteSwapRequestResponse = object;
-export declare type TokenswapMsgUpdateSwapRequestResponse = object;
-export interface TokenswapQueryAllSwapRequestResponse {
-    SwapRequest?: TokenswapSwapRequest[];
-    /**
-     * message SomeResponse {
-     *          repeated Bar results = 1;
-     *          PageResponse page = 2;
-     *  }
-     */
-    pagination?: QueryPageResponse;
-}
-export interface TokenswapQueryGetSwapRequestResponse {
-    SwapRequest?: TokenswapSwapRequest;
-}
-export interface TokenswapSwapRequest {
-    creator?: string;
-    /** @format uint64 */
-    id?: string;
-    burnTxHash?: string;
-    ethereumSender?: string;
-    receiver?: string;
-    amountEng?: string;
-    signerAddr?: string;
 }
 export declare type QueryParamsType = Record<string | number, any>;
 export declare type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
@@ -160,9 +187,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      *
      * @tags Query
      * @name QuerySwapRequest
-     * @summary this line is used by starport scaffolding # 2
      * @request GET:/hdac-hmh/swapmodule/tokenswap/SwapRequest/{id}
      */
     querySwapRequest: (id: string, params?: RequestParams) => Promise<HttpResponse<TokenswapQueryGetSwapRequestResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryTokenAll
+     * @request GET:/hdac-hmh/swapmodule/tokenswap/token
+     */
+    queryTokenAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<TokenswapQueryAllTokenResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryToken
+     * @summary this line is used by starport scaffolding # 2
+     * @request GET:/hdac-hmh/swapmodule/tokenswap/token/{id}
+     */
+    queryToken: (id: string, params?: RequestParams) => Promise<HttpResponse<TokenswapQueryGetTokenResponse, RpcStatus>>;
 }
 export {};

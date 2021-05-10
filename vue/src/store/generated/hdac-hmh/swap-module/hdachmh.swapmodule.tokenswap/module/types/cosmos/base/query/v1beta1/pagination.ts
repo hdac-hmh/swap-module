@@ -2,7 +2,7 @@
 import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "cosmos.query";
+export const protobufPackage = "cosmos.base.query.v1beta1";
 
 /**
  * PageRequest is to be embedded in gRPC request messages for efficient

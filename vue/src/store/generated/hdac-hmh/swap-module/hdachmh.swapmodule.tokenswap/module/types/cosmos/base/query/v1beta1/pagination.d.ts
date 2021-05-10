@@ -1,5 +1,5 @@
 import { Writer, Reader } from "protobufjs/minimal";
-export declare const protobufPackage = "cosmos.query";
+export declare const protobufPackage = "cosmos.base.query.v1beta1";
 /**
  * PageRequest is to be embedded in gRPC request messages for efficient
  * pagination. Ex:

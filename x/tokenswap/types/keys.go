@@ -29,3 +29,8 @@ const (
 	SwapRequestKey      = "SwapRequest-value-"
 	SwapRequestCountKey = "SwapRequest-count-"
 )
+
+const (
+	TokenKey= "Token-value-"
+	TokenCountKey= "Token-count-"
+)

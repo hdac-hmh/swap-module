@@ -2,6 +2,7 @@ syntax = "proto3";
 package hdachmh.swapmodule.tokenswap;
 
 // this line is used by starport scaffolding # genesis/proto/import
+import "tokenswap/token.proto";
 import "tokenswap/swap_request.proto";
 
 option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
@@ -9,6 +10,7 @@ option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
 // GenesisState defines the tokenswap module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
+		repeated Token tokenList = 2; // this line is used by starport scaffolding # genesis/proto/stateField
 		repeated SwapRequest SwapRequestList = 1; // this line is used by starport scaffolding # genesis/proto/stateField
     // this line is used by starport scaffolding # ibc/genesis/proto
 }

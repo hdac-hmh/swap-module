@@ -1,0 +1,13 @@
+syntax = "proto3";
+package hdachmh.swapmodule.tokenswap;
+
+option go_package = "github.com/hdac-hmh/swap-module/x/tokenswap/types";
+
+import "gogoproto/gogo.proto";
+
+message Token {
+  string creator = 1;
+  uint64 id = 2;
+  string address = 3; 
+  int32 coin = 4; 
+}

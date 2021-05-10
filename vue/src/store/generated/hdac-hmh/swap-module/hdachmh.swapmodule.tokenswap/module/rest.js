@@ -155,11 +155,38 @@ export class Api extends HttpClient {
          *
          * @tags Query
          * @name QuerySwapRequest
-         * @summary this line is used by starport scaffolding # 2
          * @request GET:/hdac-hmh/swapmodule/tokenswap/SwapRequest/{id}
          */
         this.querySwapRequest = (id, params = {}) => this.request({
             path: `/hdac-hmh/swapmodule/tokenswap/SwapRequest/${id}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryTokenAll
+         * @request GET:/hdac-hmh/swapmodule/tokenswap/token
+         */
+        this.queryTokenAll = (query, params = {}) => this.request({
+            path: `/hdac-hmh/swapmodule/tokenswap/token`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryToken
+         * @summary this line is used by starport scaffolding # 2
+         * @request GET:/hdac-hmh/swapmodule/tokenswap/token/{id}
+         */
+        this.queryToken = (id, params = {}) => this.request({
+            path: `/hdac-hmh/swapmodule/tokenswap/token/${id}`,
             method: "GET",
             format: "json",
             ...params,

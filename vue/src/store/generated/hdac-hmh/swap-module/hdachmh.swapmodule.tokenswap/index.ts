@@ -2,6 +2,7 @@ import { txClient, queryClient } from './module'
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex'
 
+import { Token } from "./module/types/tokenswap/token"
 import { SwapRequest } from "./module/types/tokenswap/swap_request"
 
 
@@ -30,10 +31,13 @@ function getStructure(template) {
 
 const getDefaultState = () => {
 	return {
+        Token: {},
+        TokenAll: {},
         SwapRequest: {},
         SwapRequestAll: {},
         
         _Structure: {
+            Token: getStructure(Token.fromPartial({})),
             SwapRequest: getStructure(SwapRequest.fromPartial({})),
             
 		},
@@ -62,6 +66,18 @@ export default {
 		}
 	},
 	getters: {
+        getToken: (state) => (params = {}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Token[JSON.stringify(params)] ?? {}
+		},
+        getTokenAll: (state) => (params = {}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.TokenAll[JSON.stringify(params)] ?? {}
+		},
         getSwapRequest: (state) => (params = {}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
@@ -98,6 +114,43 @@ export default {
 			state._Subscriptions.forEach((subscription) => {
 				dispatch(subscription.action, subscription.payload)
 			})
+		},
+		async QueryToken({ commit, rootGetters, getters }, { options: { subscribe = false , all = false}, params: {...key}, query=null }) {
+			try {
+				
+				let value = query?(await (await initQueryClient(rootGetters)).queryToken( key.id,  query)).data:(await (await initQueryClient(rootGetters)).queryToken( key.id )).data
+				
+				commit('QUERY', { query: 'Token', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryToken', payload: { options: { all }, params: {...key},query }})
+				return getters['getToken']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				console.error(new SpVuexError('QueryClient:QueryToken', 'API Node Unavailable. Could not perform query.'))
+				return {}
+			}
+		},
+		async QueryTokenAll({ commit, rootGetters, getters }, { options: { subscribe = false , all = false}, params: {...key}, query=null }) {
+			try {
+				
+				let value = query?(await (await initQueryClient(rootGetters)).queryTokenAll( query)).data:(await (await initQueryClient(rootGetters)).queryTokenAll()).data
+				
+				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
+					let next_values=(await (await initQueryClient(rootGetters)).queryTokenAll({...query, 'pagination.key':(<any> value).pagination.nextKey})).data
+					for (let prop of Object.keys(next_values)) {
+						if (Array.isArray(next_values[prop])) {
+							value[prop]=[...value[prop], ...next_values[prop]]
+						}else{
+							value[prop]=next_values[prop]
+						}
+					}
+				}
+				
+				commit('QUERY', { query: 'TokenAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryTokenAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getTokenAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				console.error(new SpVuexError('QueryClient:QueryTokenAll', 'API Node Unavailable. Could not perform query.'))
+				return {}
+			}
 		},
 		async QuerySwapRequest({ commit, rootGetters, getters }, { options: { subscribe = false , all = false}, params: {...key}, query=null }) {
 			try {
@@ -151,6 +204,20 @@ export default {
 				}
 			}
 		},
+		async sendMsgDeleteToken({ rootGetters }, { value, fee, memo }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgDeleteToken(value)
+				const result = await (await initTxClient(rootGetters)).signAndBroadcast([msg], {fee: { amount: fee, 
+  gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgDeleteToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgDeleteToken:Send', 'Could not broadcast Tx.')
+				}
+			}
+		},
 		async sendMsgDeleteSwapRequest({ rootGetters }, { value, fee, memo }) {
 			try {
 				const msg = await (await initTxClient(rootGetters)).msgDeleteSwapRequest(value)
@@ -162,6 +229,34 @@ export default {
 					throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Send', 'Could not broadcast Tx.')
+				}
+			}
+		},
+		async sendMsgCreateToken({ rootGetters }, { value, fee, memo }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgCreateToken(value)
+				const result = await (await initTxClient(rootGetters)).signAndBroadcast([msg], {fee: { amount: fee, 
+  gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgCreateToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgCreateToken:Send', 'Could not broadcast Tx.')
+				}
+			}
+		},
+		async sendMsgUpdateToken({ rootGetters }, { value, fee, memo }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgUpdateToken(value)
+				const result = await (await initTxClient(rootGetters)).signAndBroadcast([msg], {fee: { amount: fee, 
+  gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgUpdateToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgUpdateToken:Send', 'Could not broadcast Tx.')
 				}
 			}
 		},
@@ -192,6 +287,18 @@ export default {
 				}
 			}
 		},
+		async MsgDeleteToken({ rootGetters }, { value }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgDeleteToken(value)
+				return msg
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgDeleteToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgDeleteToken:Create', 'Could not create message.')
+				}
+			}
+		},
 		async MsgDeleteSwapRequest({ rootGetters }, { value }) {
 			try {
 				const msg = await (await initTxClient(rootGetters)).msgDeleteSwapRequest(value)
@@ -201,6 +308,30 @@ export default {
 					throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgDeleteSwapRequest:Create', 'Could not create message.')
+				}
+			}
+		},
+		async MsgCreateToken({ rootGetters }, { value }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgCreateToken(value)
+				return msg
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgCreateToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgCreateToken:Create', 'Could not create message.')
+				}
+			}
+		},
+		async MsgUpdateToken({ rootGetters }, { value }) {
+			try {
+				const msg = await (await initTxClient(rootGetters)).msgUpdateToken(value)
+				return msg
+			} catch (e) {
+				if (e.toString()=='wallet is required') {
+					throw new SpVuexError('TxClient:MsgUpdateToken:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgUpdateToken:Create', 'Could not create message.')
 				}
 			}
 		},
