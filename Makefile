@@ -1,12 +1,17 @@
 PACKAGES=$(shell go list ./... | grep -v '/simulation')
 
-VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
+SERVERNAME=swapd
+CLIENTNAME=swapd
+#VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
+# Temp Version. (will be removed)
 VERSION = 0.1.3
 COMMIT := $(shell git log -1 --format='%H')
 
+APPNAME=$(shell echo $(shell ls -d ./cmd/*) | cut -f 3 -d '/')
+
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=SwapService \
-	-X github.com/cosmos/cosmos-sdk/version.ServerName=swapd \
-	-X github.com/cosmos/cosmos-sdk/version.ClientName=swapcli \
+	-X github.com/cosmos/cosmos-sdk/version.ServerName=$(SERVERNAME) \
+	-X github.com/cosmos/cosmos-sdk/version.ClientName=$(CLIENTNAME) \
 	-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 	-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) 
 
@@ -41,8 +46,8 @@ endif
 all: install
 
 install: go.sum
-		@echo "--> Installing swapd"
-		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/swap-moduled
+		@echo "--> Installing "$(APPNAME)
+		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/$(APPNAME)
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"
